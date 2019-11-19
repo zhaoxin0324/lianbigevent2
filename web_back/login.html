@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/log.js"></script>
 </head>
 
 <body>
@@ -61,7 +62,6 @@
             var username = $('.input_txt').val().trim();
             var password = $('.input_pass').val().trim();
             // console.log(username, password);
-
             //    判断是否为空
             if (username == '' || password == '') {
                 $('#myModalLabel').html('友情提示');
@@ -69,22 +69,21 @@
                 $('#myModal').modal('show');
                 return;
             }
+
+
             // 输入之后发送ajax请求判断是否正确
-            $.post("http://localhost:8000/admin/login", {
-                user_name: username,
-                password: password
-            }, function(res) {
+            objLog.login(username, password, function(res) {
                 console.log(res);
                 if (res.code == '400') {
-                    $('.modal-body').html('账号或密码输入错误');
+                    $('.modal-body').html(res.msg);
                     $('#myModal').modal('show');
                 } else if (res.code == '200') {
                     $('.modal-body').html('登录成功');
                     $('#myModal').modal('show');
                     location.href = 'index.html';
                 }
+            });
 
-            })
 
         })
     </script>
