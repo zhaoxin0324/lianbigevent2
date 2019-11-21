@@ -1,14 +1,15 @@
+var baseUrl = "http://localhost:8000";
 var objLog = {
     login: function(username, password, callback) {
-        $.post(BASEURL.logIn, {
+        $.post(baseUrl + "/admin/login", {
             user_name: username,
             password: password
         }, callback)
     },
     offmsg: function(callback) {
-        $.get(BASEURL.offSet, callback);
+        $.get(baseUrl + "/admin/getuser", callback);
     },
     logout: function(callback) {
-        $.post(BASEURL.offSet.LogOut, callback)
+        $.post(baseUrl + '/admin/logout', callback)
     }
 }
