@@ -14,4 +14,6 @@ var BASEURL = {
     category_add: baseUrl + "/admin/category_add",
 
     category_del: baseUrl + "/admin/category_delete",
+
+    category_edit: baseUrl + "/admin/category_edit",
 }

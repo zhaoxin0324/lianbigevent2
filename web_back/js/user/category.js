@@ -14,5 +14,11 @@ var category = {
         $.post(BASEURL.category_del, data, function(res) {
             callback(res)
         })
-    }
+    },
+    edit: function(data, callback) {
+        $.post(BASEURL.category_edit, data, function(res) {
+            callback(res)
+        })
+    },
+
 }
