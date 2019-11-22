@@ -8,7 +8,7 @@ var BASEURL = {
     offSet: baseUrl + "/admin/getuser",
 
     logOut: baseUrl + "/admin/logout",
-
+    // 文章类别接口
     category_show: baseUrl + "/admin/category_search",
 
     category_add: baseUrl + "/admin/category_add",
@@ -16,4 +16,8 @@ var BASEURL = {
     category_del: baseUrl + "/admin/category_delete",
 
     category_edit: baseUrl + "/admin/category_edit",
+    // 文章类接口
+    article_show: baseUrl + "/admin/search",
+
+    article_del: baseUrl + "/admin/article_delete",
 }
