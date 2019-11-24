@@ -23,29 +23,25 @@
             文章编辑
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="text" class="form-control" id="art_title" value="文章标题文字" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/pic06.jpg" class="article_cover" id="art_cover">
+                        <input type="file" name="cover" id="imgCh">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>类别一</option>
-                            <option>类别二</option>
-                            <option>类别三</option>
-                            <option selected>类别四</option>
-                            <option>类别五</option>
+                        <select class="form-control" id="sel_cate" name="type">
+                      
                         </select>
                     </div>
                 </div>
@@ -54,7 +50,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" value="2019-05-17" id="art_date" name="date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -71,13 +67,73 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="button" class="btn btn-success" id="editBtn">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <script src="./js/template-web.js"></script>
+    <script src="./js/user/config.js"></script>
+    <script src="./js/user/category.js"></script>
+    <script src="./js/user/article.js"></script>
+    <script id="cate_temp" type="text/html">
+        {{each data item}}
+        <option value={{item.id}}>{{item.name}}</option>
+        {{/each}}
 
+    </script>
+    <script>
+        var id = location.search.substring(4);
+        //  获取页面详情
+        article.show({
+            id: id
+        }, function(res) {
+            category.show(function(result) {
+                // 渲染类别
+                console.log(result);
+                var htmlStr = template("cate_temp", result);
+                $("#sel_cate").html(htmlStr);
+                $("#sel_cate").val(res.data.type);
+            });
+            console.log(res);
+            $("#art_title").val(res.data.title);
+            $("#art_cover").prop("src", res.data.cover);
+
+            $("#art_date").val(res.data.date);
+            $("#rich_content").val(res.data.content);
+
+            // 获取文章类别 并且要选中当前类别$("#sel_cate")的value值与option的相同 自动选择
+
+        });
+        //编辑功能
+        // 点击编辑，通过id服务器获取该文章信息，渲染到页面上
+        // 保存修改
+        $("#editBtn").click(function() {
+            // 有图片用formData
+            var fd = new FormData(document.querySelector("#form"));
+
+            // 添加id属性、
+            fd.append("id", id);
+            fd.set("content", tinyMCE.activeEditor.getContent());
+            console.log(fd.get("title"));
+            // 发送请求
+            article.edit(fd, function(res) {
+                console.log(res);
+                if (res.code == 200) {
+                    alert("修改成功！")
+                } else {
+                    alert(res.msg)
+                }
+            });
+        });
+        // 图片预览
+        $("#imgCh").change(function() {
+            // 功能是：给文件file，生成一个临时的，可以访问的路径保存在path
+            var img = URL.createObjectURL(this.files[0]);
+            $("#art_cover").prop("src", img);
+        });
+    </script>
 </body>
 
 </html>
